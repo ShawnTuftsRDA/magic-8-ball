@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic 8 Ball - Ask Any Question | Free Online Magic 8-Ball</title>
+<meta name="description" content="Free online Magic 8 Ball. Ask any yes or no question, shake the ball, and get your answer. Classic responses plus meme edition answers.">
+<meta name="keywords" content="magic 8 ball, magic 8-ball online, ask magic 8 ball, fortune teller, yes no oracle, shake magic 8 ball">
+<style>
+:root{--bg:#080810;--bg2:#0f0f1a;--bg3:#161628;--border:#1e1e40;--accent:#818cf8;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--text:#c7d2fe;--text-dim:#6366f1;--white:#e0e7ff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+.topnav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;}
+.nav-logo{font-size:16px;font-weight:700;color:var(--accent);text-decoration:none;}
+.ad-banner{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px;text-align:center;min-height:90px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:12px;}
+.main{flex:1;display:flex;flex-direction:column;align-items:center;padding:32px 16px;}
+.hero{text-align:center;margin-bottom:28px;}
+.hero h1{font-size:clamp(26px,5vw,44px);font-weight:900;color:var(--white);margin-bottom:8px;}
+.hero p{font-size:15px;color:var(--text-dim);}
+.question-row{display:flex;gap:10px;width:100%;max-width:500px;margin-bottom:24px;}
+.q-input{flex:1;background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:14px 18px;border-radius:10px;font-size:16px;font-family:inherit;outline:none;}
+.q-input:focus{border-color:var(--accent);}
+.ask-btn{padding:14px 24px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;}
+.ask-btn:hover{filter:brightness(1.15);}
+/* THE BALL */
+.ball-wrap{position:relative;width:260px;height:260px;cursor:pointer;margin:0 auto 20px;}
+.ball-wrap:active{transform:scale(.97);}
+.ball{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2a2a4a,#050505);box-shadow:0 0 60px rgba(99,102,241,.3),inset 0 0 40px rgba(0,0,0,.8);position:relative;transition:transform .1s;}
+.ball.shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97);}
+@keyframes shake{0%,100%{transform:rotate(0)}10%{transform:rotate(-8deg)}20%{transform:rotate(8deg)}30%{transform:rotate(-6deg)}40%{transform:rotate(6deg)}50%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}70%{transform:rotate(-2deg)}80%{transform:rotate(2deg)}90%{transform:rotate(-1deg)}}
+.ball-8{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#1a1a3a,#0a0a0a);display:flex;align-items:center;justify-content:center;}
+.ball-8 span{font-size:44px;font-weight:900;color:#fff;font-family:Georgia,serif;}
+.answer-window{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(10,10,30,.85);opacity:0;transition:opacity .4s;}
+.answer-window.show{opacity:1;}
+.answer-text{font-size:13px;font-weight:700;text-align:center;line-height:1.3;padding:8px;}
+.tap-hint{font-size:13px;color:var(--text-dim);text-align:center;margin-bottom:16px;}
+.mode-row{display:flex;gap:8px;justify-content:center;margin-bottom:20px;}
+.mode-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text-dim);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.mode-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.history{width:100%;max-width:480px;margin-top:8px;}
+.history-title{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;text-align:center;}
+.history-list{display:flex;flex-direction:column;gap:6px;}
+.history-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;display:flex;justify-content:space-between;align-items:center;}
+.history-q{color:var(--text-dim);flex:1;}
+.history-a{font-weight:700;margin-left:12px;white-space:nowrap;}
+.ad-mid{text-align:center;margin:20px auto;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;min-height:90px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:12px;width:100%;max-width:500px;}
+.faq-wrap{width:100%;max-width:700px;padding:0 16px 40px;}
+.faq h2{font-size:20px;font-weight:700;color:var(--white);margin-bottom:16px;text-align:center;}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:8px;}
+.faq-q{font-weight:600;color:var(--white);margin-bottom:6px;}.faq-a{color:var(--text-dim);font-size:14px;line-height:1.6;}
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:20px;text-align:center;color:var(--text-dim);font-size:13px;}
+footer a{color:var(--text-dim);text-decoration:none;margin:0 8px;}
+</style>
+</head>
+<body>
+<nav class="topnav"><a href="/" class="nav-logo">QuickTools</a></nav>
+<div class="ad-banner">Advertisement</div>
+<div class="main">
+<div class="hero"><h1>Magic 8-Ball</h1><p>Ask a yes or no question. Shake the ball. Accept your fate.</p></div>
+<div class="question-row">
+  <input class="q-input" id="q-input" placeholder="Ask a question..." maxlength="120">
+  <button class="ask-btn" onclick="ask()">Ask</button>
+</div>
+<div class="mode-row">
+  <button class="mode-btn active" onclick="setMode('classic',this)">Classic</button>
+  <button class="mode-btn" onclick="setMode('meme',this)">Meme Edition</button>
+  <button class="mode-btn" onclick="setMode('savage',this)">Savage Mode</button>
+</div>
+<div class="ball-wrap" onclick="ask()">
+  <div class="ball" id="ball">
+    <div class="ball-8" id="ball-8"><span>8</span></div>
+    <div class="answer-window" id="answer-window">
+      <div class="answer-text" id="answer-text" style="color:#818cf8">Tap to reveal your fate</div>
+    </div>
+  </div>
+</div>
+<div class="tap-hint">Click the ball or press Enter to ask</div>
+<div class="history" id="history-wrap" style="display:none">
+  <div class="history-title">Recent Questions</div>
+  <div class="history-list" id="history-list"></div>
+</div>
+<div class="ad-mid">Advertisement</div>
+<div class="faq-wrap"><div class="faq"><h2>Frequently Asked Questions</h2>
+<div class="faq-item"><div class="faq-q">What is a Magic 8-Ball?</div><div class="faq-a">The Magic 8-Ball is a novelty toy invented in the 1950s. You ask a yes or no question, shake it, and a floating icosahedron (20-sided die) inside reveals one of 20 possible answers through a window.</div></div>
+<div class="faq-item"><div class="faq-q">How many answers does the Magic 8-Ball have?</div><div class="faq-a">The classic Magic 8-Ball has 20 responses: 10 positive, 5 neutral, and 5 negative. Our version includes all classics plus bonus Meme and Savage mode answers.</div></div>
+<div class="faq-item"><div class="faq-q">Is the Magic 8-Ball accurate?</div><div class="faq-a">The Magic 8-Ball selects responses randomly. It is a toy intended for entertainment only. Please do not make major life decisions based on its answers.</div></div>
+<div class="faq-item"><div class="faq-q">What is the best question to ask the Magic 8-Ball?</div><div class="faq-a">Yes/no questions work best. Avoid open-ended questions. Classic examples: "Will I get the job?", "Does my crush like me?", "Should I eat the last slice of pizza?"</div></div>
+</div></div>
+</div>
+<footer>2025 QuickTools &nbsp;|&nbsp; <a href="/privacy.html">Privacy</a> <a href="/terms.html">Terms</a></footer>
+<script>
+const ANSWERS={
+  classic:[
+    {t:"It is certain",c:"#10b981"},{t:"It is decidedly so",c:"#10b981"},{t:"Without a doubt",c:"#10b981"},
+    {t:"Yes, definitely",c:"#10b981"},{t:"You may rely on it",c:"#10b981"},{t:"As I see it, yes",c:"#10b981"},
+    {t:"Most likely",c:"#10b981"},{t:"Outlook good",c:"#10b981"},{t:"Yes",c:"#10b981"},
+    {t:"Signs point to yes",c:"#10b981"},{t:"Reply hazy, try again",c:"#f59e0b"},
+    {t:"Ask again later",c:"#f59e0b"},{t:"Better not tell you now",c:"#f59e0b"},
+    {t:"Cannot predict now",c:"#f59e0b"},{t:"Concentrate and ask again",c:"#f59e0b"},
+    {t:"Don't count on it",c:"#ef4444"},{t:"My reply is no",c:"#ef4444"},
+    {t:"My sources say no",c:"#ef4444"},{t:"Outlook not so good",c:"#ef4444"},{t:"Very doubtful",c:"#ef4444"}
+  ],
+  meme:[
+    {t:"Big yes",c:"#10b981"},{t:"Absolutely slaps",c:"#10b981"},{t:"No cap, yes",c:"#10b981"},
+    {t:"It is what it is... yes",c:"#10b981"},{t:"Vibe check: passed",c:"#10b981"},
+    {t:"Sheesh, yes",c:"#10b981"},{t:"Touch grass then yes",c:"#f59e0b"},
+    {t:"The oracle is loading...",c:"#f59e0b"},{t:"Let him cook first",c:"#f59e0b"},
+    {t:"Skill issue, ask again",c:"#f59e0b"},{t:"L + ratio",c:"#ef4444"},
+    {t:"Absolutely not bestie",c:"#ef4444"},{t:"The audacity",c:"#ef4444"},
+    {t:"Nah fam",c:"#ef4444"},{t:"Delete this question",c:"#ef4444"},
+    {t:"Send it and see",c:"#818cf8"},{t:"That is not very sigma",c:"#ef4444"},
+    {t:"Mid idea honestly",c:"#f59e0b"},{t:"Understood the assignment: NO",c:"#ef4444"},
+    {t:"We move... to no",c:"#ef4444"}
+  ],
+  savage:[
+    {t:"Lol no",c:"#ef4444"},{t:"You already know the answer",c:"#f59e0b"},{t:"That is between you and God",c:"#818cf8"},
+    {t:"Ask your therapist",c:"#f59e0b"},{t:"Hard pass",c:"#ef4444"},
+    {t:"Even I feel bad saying this: no",c:"#ef4444"},{t:"Sure, if you enjoy suffering",c:"#ef4444"},
+    {t:"The answer is no and you knew that",c:"#ef4444"},{t:"Bold of you to ask",c:"#f59e0b"},
+    {t:"I cannot support this",c:"#ef4444"},{t:"Surprisingly yes",c:"#10b981"},
+    {t:"Against all odds: yes",c:"#10b981"},{t:"Do not let anyone stop you",c:"#10b981"},
+    {t:"That is actually a great idea",c:"#10b981"},{t:"Go off, yes",c:"#10b981"},
+    {t:"I mean... sure",c:"#818cf8"},{t:"Shake harder and ask again",c:"#f59e0b"},
+    {t:"Even the universe is not sure",c:"#f59e0b"},{t:"Ask me after coffee",c:"#f59e0b"},
+    {t:"That is above my pay grade",c:"#f59e0b"}
+  ]
+};
+let mode="classic",isShaking=false,history=[];
+function setMode(m,btn){mode=m;document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");}
+function ask(){
+  if(isShaking)return;
+  const q=document.getElementById("q-input").value.trim();
+  isShaking=true;
+  const ball=document.getElementById("ball");
+  const win=document.getElementById("answer-window");
+  const txt=document.getElementById("answer-text");
+  const ball8=document.getElementById("ball-8");
+  win.classList.remove("show");
+  ball8.style.display="flex";
+  ball.classList.remove("shake");void ball.offsetWidth;ball.classList.add("shake");
+  playShake();
+  setTimeout(()=>{
+    const pool=ANSWERS[mode];
+    const ans=pool[Math.floor(Math.random()*pool.length)];
+    txt.textContent=ans.t;txt.style.color=ans.c;
+    ball8.style.display="none";
+    win.classList.add("show");
+    if(q){
+      history.unshift({q:q.length>40?q.slice(0,40)+"...":q,a:ans.t,c:ans.c});
+      if(history.length>5)history.pop();
+      renderHistory();
+    }
+    isShaking=false;
+    ball.classList.remove("shake");
+  },600);
+}
+function playShake(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.type="sine";
+    o.frequency.setValueAtTime(200,ctx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(80,ctx.currentTime+0.3);
+    g.gain.setValueAtTime(0.1,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.4);
+    o.start();o.stop(ctx.currentTime+0.4);
+  }catch(e){}
+}
+function renderHistory(){
+  const wrap=document.getElementById("history-wrap");
+  const list=document.getElementById("history-list");
+  wrap.style.display="block";
+  list.innerHTML=history.map(h=>`<div class="history-item"><div class="history-q">${h.q||"(no question)"}</div><div class="history-a" style="color:${h.c}">${h.a}</div></div>`).join("");
+}
+document.getElementById("q-input").addEventListener("keydown",e=>{if(e.key==="Enter")ask();});
+</script>
+</body></html>
